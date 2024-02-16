@@ -239,4 +239,4 @@ The following code evaluates the model's accuracy with the test set, yielding a 
 ```python
 accuracy_score(data_test["sentiment"], data_test_predict_7)
 ```
-
+In the notebook named 'pipeline_7' ([![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jessica-arroyo/kaggle_movie_reviews/blob/main/pipeline_7.ipynb)) there is a summarized implementation to reproduce the best model and obtain the mentioned accuracy.
