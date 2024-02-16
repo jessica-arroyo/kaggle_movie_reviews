@@ -85,13 +85,13 @@ data_test=data_clean[35000:]
 
 Four distinct pipelines are built, each designed to explore different preprocessing techniques and feature representations before applying a logistic regression classifier. The pipelines are defined as follows:
 
-Pipeline 1: Utilizes a basic CountVectorizer to convert text data into token counts, followed by standard scaling of features and logistic regression for classification.
+**Pipeline 1:** Utilizes a basic CountVectorizer to convert text data into token counts, followed by standard scaling of features and logistic regression for classification.
 
-Pipeline 2: Extends Pipeline 1 by incorporating stop words removal during tokenization with CountVectorizer to improve feature representation.
+**Pipeline 2:** Extends Pipeline 1 by incorporating stop words removal during tokenization with CountVectorizer to improve feature representation.
 
-Pipeline 3: Integrates a Term Frequency-Inverse Document Frequency (TF-IDF) transformation alongside CountVectorizer to enhance feature representation for logistic regression.
+**Pipeline 3:** Integrates a Term Frequency-Inverse Document Frequency (TF-IDF) transformation alongside CountVectorizer to enhance feature representation for logistic regression.
 
-Pipeline 4: Utilizes CountVectorizer with a specific n-gram range of (2, 2) to capture word pairs as features, combined with standard scaling and logistic regression.
+**Pipeline 4:** Utilizes CountVectorizer with a specific n-gram range of (2, 2) to capture word pairs as features, combined with standard scaling and logistic regression.
 
 ```python
 from sklearn.pipeline import make_pipeline
@@ -112,3 +112,36 @@ pipeline_3.fit(data_train["review"], data_train["sentiment"])
 pipeline_4 = make_pipeline(CountVectorizer(preprocessor=simple_preprocessor, ngram_range=(2, 2)), StandardScaler(with_mean=False), LogisticRegression())
 pipeline_4.fit(data_train["review"], data_train["sentiment"])
 ```
+
+## Pipeline performance 
+
+The performance of each pipeline is evaluated using 5-fold cross-validation. The evaluation metrics employed include precision, recall, and accuracy, which are computed across all folds to provide a comprehensive assessment of classification performance.
+
+**Precision:** Measures the proportion of correctly predicted positive cases relative to all cases predicted as positive.
+
+**Recall:** Measures the proportion of correctly predicted positive cases relative to all actual positive cases.
+
+**Accuracy:** Represents the proportion of correctly classified cases out of all cases.
+
+The following code shows the evaluation procedure.
+
+```python
+
+# Define the pipelines to be evaluated
+pipelines = [pipeline_1, pipeline_2, pipeline_3, pipeline_4]
+
+# Define the evaluation metrics
+scoring = {'precision': make_scorer(precision_score, average='weighted'),
+           'recall': make_scorer(recall_score, average='weighted'),
+           'accuracy': make_scorer(accuracy_score)}
+
+# Evaluate each pipeline using 5-fold cross-validation and the defined metrics
+for i, pipeline in enumerate(pipelines):
+    scores = cross_validate(pipeline, data_train["review"], data_train["sentiment"], cv=5, scoring=scoring)
+    precision = scores['test_precision'].mean()
+    recall = scores['test_recall'].mean()
+    accuracy = scores['test_accuracy'].mean()
+    print(f'Pipeline {i+1}: Precision={precision:.6f}, Recall={recall:.6f}, Accuracy={accuracy:.6f}')
+
+```
+
