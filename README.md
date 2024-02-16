@@ -153,3 +153,11 @@ for i, pipeline in enumerate(pipelines):
 | 3        | 0.891912  | 0.891714 | 0.891714 |
 | 4        | 0.892550  | 0.891371 | 0.891371 |
 
+The results from `Table 1` indicate that pipelines 1 and 2, which combine CountVectorizer, StandardScaler, and LogisticRegression, exhibit similar values of precision, recall, and accuracy. However, these values are lower than those obtained by pipelines 3 and 4.
+
+Specifically, pipeline 3, which includes TfidfTransformer in its combination of techniques, achieves the highest values of precision, recall, and accuracy. This suggests that weighting words according to their relevance in documents significantly enhances the model's performance.
+
+On the other hand, pipeline 4 utilizes a CountVectorizer with an n-gram range of (2,2) and also achieves high values of precision, recall, and accuracy. The inclusion of two-word n-grams in the CountVectorizer may allow the model to more effectively capture semantic relationships between words in the texts.
+
+In summary, the results demonstrate that the inclusion of TfidfTransformer or n-grams in text preprocessing can significantly improve the model's performance in terms of precision, recall, and accuracy.
+
