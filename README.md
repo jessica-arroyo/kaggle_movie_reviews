@@ -213,7 +213,7 @@ pipeline_8.fit(data_train["review"], data_train["sentiment"])
 ```
 The performance of the new pipelines is illustrated in `Table 2`.
 
-### Table 2: 
+### Table 2: Evaluation Metrics for the New Pipelines
 
 | Pipeline | Precision | Recall | Accuracy |
 |----------|-----------|--------|----------|
@@ -222,9 +222,21 @@ The performance of the new pipelines is illustrated in `Table 2`.
 | 7        | 0.892817  | 0.892486 | 0.892486 |
 | 8        | 0.839951  | 0.839914 | 0.839914 |
 
-It can be observed that pipelines 5 and 6, which employ new techniques, exhibit similar performance to pipelines 1 and 2. However, pipeline 7 achieves better performance compared to the previous ones, suggesting that the combination of different transformations enhances the model's performance. On the other hand, it is noted that pipeline 8 shows a deterioration in its performance when tuning parameters, indicating possible overfitting when finding the best parameters, leading to reduced performance on new cross-validation folds. Since pipeline 7 has demonstrated the best performance among all considered options, it will be used as the final model. In order to further improve its performance, GridSearchCV has been utilized to find the best parameters, and a new pipeline generated as presented in the following code:
+It can be observed that pipelines 5 and 6, which employ new techniques, exhibit similar performance to pipelines 1 and 2. However, pipeline 7 achieves better performance compared to the previous ones, suggesting that the combination of different transformations enhances the model's performance. On the other hand, it is noted that pipeline 8 shows a deterioration in its performance when tuning parameters, indicating possible overfitting when finding the best parameters, leading to reduced performance on new cross-validation folds. Since pipeline 7 has demonstrated the best performance among all considered options, it will be used as the final model. In order to further improve its performance, GridSearchCV has been utilized to find the best parameters, and a new pipeline generated as presented in the following code. Which produces the results in `Table 3`.
 
+```python
+pipeline_7=make_pipeline(FunctionTransformer(no_contractions), CountVectorizer(stop_words=stop_words, ngram_range=(1, 2), max_features=35000), TfidfTransformer(sublinear_tf=True), LogisticRegression())
+```
 
+### Table 3: Evaluation Metrics for the Best Pipeline
+| Pipeline | Precision | Recall | Accuracy |
+|----------|-----------|--------|----------|
+| 7        | 0.896439  | 0.896143 | 0.896143 |
 
+## Final Model 
+The following code evaluates the model's accuracy with the test set, yielding a result of 0.9026. The trained model has demonstrated satisfactory performance on both the training and test sets, with accuracies of 0.8961 and 0.9026 respectively. This indicates that the model is generalizing well to new data and shows no signs of overfitting.
 
+```python
+accuracy_score(data_test["sentiment"], data_test_predict_7)
+```
 
