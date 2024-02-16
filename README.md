@@ -13,36 +13,38 @@ data=pd.read_csv("IMDB Dataset.csv")
 We can then utilize the function `show_word_clouds` to visualize the most frequent words used in positive and negative reviews separately, as illustrated in `Figure 1`.
 
 ```python
+from wordcloud import WordCloud
 def show_word_clouds(data, stopwords=None):
-    
     '''
-    Entrada:
-        data: DataFrame de pandas con las críticas y su evaluación
-        stopwords: palabras que por ser muy comunes y/o
-                   poco informativas no se tomarán en cuenta al realizar la nube
+    Input:
+        data: Pandas DataFrame containing reviews and their sentiment evaluation.
+        stopwords: Words that, being very common and/or uninformative, will not be considered when generating the word cloud.
     '''
     
-    pos=' '.join(map(str,data['review'][data['sentiment']=='positive']))
-    neg=' '.join(map(str,data['review'][data['sentiment']=='negative']))
+    # Extract positive and negative reviews
+    pos = ' '.join(map(str, data['review'][data['sentiment'] == 'positive']))
+    neg = ' '.join(map(str, data['review'][data['sentiment'] == 'negative']))
 
-    positive_cloud = WordCloud(width = 800, height = 800, 
-                background_color ='black', 
-                stopwords = stopwords, 
-                min_font_size = 10).generate(pos) 
+    # Generate word clouds for positive and negative sentiments
+    positive_cloud = WordCloud(width=800, height=800, 
+                               background_color='black', 
+                               stopwords=stopwords, 
+                               min_font_size=10).generate(pos) 
     
-    negative_cloud = WordCloud(width = 800, height = 800, 
-                background_color ='black', 
-                stopwords = stopwords, 
-                min_font_size = 10).generate(neg) 
+    negative_cloud = WordCloud(width=800, height=800, 
+                               background_color='black', 
+                               stopwords=stopwords, 
+                               min_font_size=10).generate(neg) 
 
-    plt.figure(figsize=(16,8))
-    plt.subplot(1,2,1)
+    # Display the word clouds
+    plt.figure(figsize=(16, 8))
+    plt.subplot(1, 2, 1)
     plt.imshow(positive_cloud)
-    plt.title('Sentimento positivo')
+    plt.title('Positive Sentiment')
     plt.axis('off')
-    plt.subplot(1,2,2)
+    plt.subplot(1, 2, 2)
     plt.imshow(negative_cloud)
-    plt.title('Sentimento negativo')
+    plt.title('Negative Sentiment')
     plt.axis('off')
 
 show_word_clouds(data)
@@ -55,6 +57,14 @@ show_word_clouds(data)
   </tr>
 </table>
 
-At first glance, there doesn't appear to be a strong correlation between the words in the word cloud and the sentiment of the reviews. However, it's noticeable that the word cloud contains HTML elements such as 'br' tags, indicating the presence of HTML formatting within the reviews. Therefore, it's important to preprocess the data appropriately and remove HTML tags to ensure accurate analysis.
+At first glance, there doesn't appear to be a strong correlation between the words in the word cloud and the sentiment of the reviews. However, it's noticeable that the word cloud contains HTML elements such as 'br' tags, indicating the presence of HTML formatting within the reviews. Therefore, it's important to preprocess the data appropriately and remove HTML tags to ensure accurate analysis. For that reason the function `simple_preprocessor` was created, which removes HTML tags, non-word characters, and converts the text to lowercase. 
 
+```python
+import re 
+def simple_preprocessor(text):
+    text = re.sub('<.*?>', '', text)      # Remove HTML tags
+    text = re.sub('[\W]+', ' ', text)     # Remove non-word characters
+    text = text.lower()                   # Convert text to lowercase
+    return text
+```
 
