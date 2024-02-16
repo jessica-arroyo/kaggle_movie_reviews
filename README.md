@@ -211,3 +211,20 @@ pipeline_8 = make_pipeline(CountVectorizer(ngram_range=(2, 2), max_features=1500
                             LogisticRegression(C=0.1))
 pipeline_8.fit(data_train["review"], data_train["sentiment"])
 ```
+The performance of the new pipelines is illustrated in `Table 2`.
+
+### Table 2: 
+
+| Pipeline | Precision | Recall | Accuracy |
+|----------|-----------|--------|----------|
+| 5        | 0.866065  | 0.865857 | 0.865857 |
+| 6        | 0.864486  | 0.864314 | 0.864314 |
+| 7        | 0.892817  | 0.892486 | 0.892486 |
+| 8        | 0.839951  | 0.839914 | 0.839914 |
+
+It can be observed that pipelines 5 and 6, which employ new techniques, exhibit similar performance to pipelines 1 and 2. However, pipeline 7 achieves better performance compared to the previous ones, suggesting that the combination of different transformations enhances the model's performance. On the other hand, it is noted that pipeline 8 shows a deterioration in its performance when tuning parameters, indicating possible overfitting when finding the best parameters, leading to reduced performance on new cross-validation folds. Since pipeline 7 has demonstrated the best performance among all considered options, it will be used as the final model. In order to further improve its performance, GridSearchCV has been utilized to find the best parameters, and a new pipeline generated as presented in the following code:
+
+
+
+
+
