@@ -161,3 +161,53 @@ On the other hand, pipeline 4 utilizes a CountVectorizer with an n-gram range of
 
 In summary, the results demonstrate that the inclusion of TfidfTransformer or n-grams in text preprocessing can significantly improve the model's performance in terms of precision, recall, and accuracy.
 
+## Model Optimization
+
+Based on the values obtained in the evaluation of the previous 4 pipelines, four new pipelines are created.
+
+**Pipeline 5:** utilizes a custom text analysis function (analyzer) to perform lemmatization of words in the input text.
+
+**Pipeline 6:** employs a custom function (no contractions) to remove contractions from words in the input text.
+
+**Pipeline 7:** is a combination of some of the previous pipelines to assess whether their joint application enhances the model's performance.
+
+**Pipeline 8:** represents an enhancement of Pipeline 4, incorporating the best parameters found using GridSearchCV.
+
+```python
+# Custom function for lemmatizing words in text
+def analyzer(text):
+    lemmatizer = WordNetLemmatizer()
+    words = text.split()
+    lemmatized_words = [lemmatizer.lemmatize(word) for word in words]
+    return lemmatized_words
+
+# Pipeline 5
+pipeline_5 = make_pipeline(CountVectorizer(analyzer=analyzer),
+                            StandardScaler(with_mean=False),
+                            LogisticRegression())
+pipeline_5.fit(data_train["review"], data_train["sentiment"])
+
+# Custom function to remove contractions
+def no_contractions(df):
+    return df.apply(lambda x: contractions.fix(x))
+
+# Pipeline 6
+pipeline_6 = make_pipeline(FunctionTransformer(no_contractions),
+                            CountVectorizer(),
+                            StandardScaler(with_mean=False),
+                            LogisticRegression())
+pipeline_6.fit(data_train["review"], data_train["sentiment"])
+
+# Pipeline 7
+pipeline_7 = make_pipeline(FunctionTransformer(no_contractions),
+                            CountVectorizer(stop_words=stop_words),
+                            TfidfTransformer(),
+                            LogisticRegression())
+pipeline_7.fit(data_train["review"], data_train["sentiment"])
+
+# Pipeline 8
+pipeline_8 = make_pipeline(CountVectorizer(ngram_range=(2, 2), max_features=15000),
+                            StandardScaler(with_mean=False),
+                            LogisticRegression(C=0.1))
+pipeline_8.fit(data_train["review"], data_train["sentiment"])
+```
