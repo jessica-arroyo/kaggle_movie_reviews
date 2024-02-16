@@ -123,7 +123,7 @@ The performance of each pipeline is evaluated using 5-fold cross-validation. The
 
 **Accuracy:** Represents the proportion of correctly classified cases out of all cases.
 
-The following code shows the evaluation procedure.
+The following code shows the evaluation procedure, the resulting metrics are presented in the  `Table 1 `.
 
 ```python
 
@@ -144,4 +144,12 @@ for i, pipeline in enumerate(pipelines):
     print(f'Pipeline {i+1}: Precision={precision:.6f}, Recall={recall:.6f}, Accuracy={accuracy:.6f}')
 
 ```
+### Table 1:  Evaluation Metrics for the Pipelines
+
+| Pipeline | Precision | Recall | Accuracy |
+|----------|-----------|--------|----------|
+| 1        | 0.864530  | 0.864343 | 0.864343 |
+| 2        | 0.860490  | 0.860286 | 0.860286 |
+| 3        | 0.891912  | 0.891714 | 0.891714 |
+| 4        | 0.892550  | 0.891371 | 0.891371 |
 
