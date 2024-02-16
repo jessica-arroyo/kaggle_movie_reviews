@@ -54,3 +54,7 @@ show_word_clouds(data)
     <td><img src="show_word_clouds.png" alt="Figure 1"></td>
   </tr>
 </table>
+
+At first glance, there doesn't appear to be a strong correlation between the words in the word cloud and the sentiment of the reviews. However, it's noticeable that the word cloud contains HTML elements such as 'br' tags, indicating the presence of HTML formatting within the reviews. Therefore, it's important to preprocess the data appropriately and remove HTML tags to ensure accurate analysis.
+
+
